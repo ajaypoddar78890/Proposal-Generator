@@ -1,82 +1,82 @@
 import { useState, useRef } from "react";
-import { jsPDF } from "jspdf";
+import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import AttributeSelector from "./AttributeSelector";
 
 export default function ProposalLayout() {
-  const [items, setItems] = useState([]); // Stores added attributes
+  const [items, setItems] = useState([]);
   const printRef = useRef(null);
+  const backgroundImageUrl = "/assets/layout.webp";
 
   // Handle drag-and-drop events
   const handleDragStart = (e, attr) => {
-    e.dataTransfer.setData("attribute", attr); // Store dragged attribute
+    e.dataTransfer.setData("attribute", attr);
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
-    const attr = e.dataTransfer.getData("attribute"); // Retrieve dragged attribute
+    const attr = e.dataTransfer.getData("attribute");
     if (attr) {
-      setItems((prev) => [...prev, attr]); // Add attribute to layout
+      setItems((prev) => [...prev, attr]);
     }
   };
 
   const handleDragOver = (e) => {
-    e.preventDefault(); // Allow drop
+    e.preventDefault();
   };
 
-  // Export layout to PDF with background image
-  const exportToPDF = () => {
-    const layoutContent = printRef.current;
+  // Export to PDF
+  const exportToPDF = async () => {
+    const element = printRef.current;
+    const canvas = await html2canvas(element, { useCORS: true, scale: 1.5 });
+    const imgData = canvas.toDataURL("image/jpeg", 0.7);
+    const pdf = new jsPDF("portrait", "mm", "a4");
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    // Use html2canvas to capture the layout content (including background)
-    html2canvas(layoutContent).then((canvas) => {
-      const doc = new jsPDF();
-
-      // Add the captured canvas as an image to the PDF
-      doc.addImage(canvas.toDataURL("image/png"), "PNG", 10, 10, 180, 250); // Adjust position and size
-
-      // Save the generated PDF
-      doc.save("proposal-layout.pdf");
-    });
+    pdf.addImage(imgData, "JPEG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("proposal.pdf");
   };
 
   return (
     <div className="flex space-x-4">
-      {/* Attribute Selector */}
       {/* <AttributeSelector onDragStart={handleDragStart} /> */}
-
-      {/* Proposal Layout */}
       <div className="bg-white p-4 shadow-md rounded-md w-2/2">
-        <h2 className="text-xl font-semibold mb-3">Proposal Layout</h2>
+        <h2 className="text-xl font-semibold mb-3">Proposal Preview</h2>
         <div
           ref={printRef}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
-          className="border border-gray-300 p-4 relative mylayout space-y-4"
+          className="border border-gray-300  p-4 relative mylayout space-y-4"
           style={{
             width: "210mm",
             height: "297mm",
-            backgroundColor: "#f8f9fa",
-            backgroundImage: "url('/assets/layout.webp')", // Ensure the background image is set correctly
+            backgroundImage: `url(${backgroundImageUrl})`,
             backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
           }}
         >
           {items.map((item, index) => (
             <div
               key={index}
-              draggable // Make the added items draggable for reuse
-              onDragStart={(e) => handleDragStart(e, item)}
-              className="p-4 border border-dashed border-gray-400 bg-white bg-opacity-80 rounded-md cursor-move mt-52"
+              className="p-4 border mt-52 border-dashed border-gray-400 bg-white bg-opacity-80 rounded-md"
             >
               <strong>{item}</strong>: This is a placeholder for {item}.
             </div>
           ))}
         </div>
-      </div>
 
-     
-       
+        {/* Place the Export to PDF button at the end */}
+        <div className="mt-6 flex justify-end">
+          <button
+            onClick={exportToPDF}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            Export to PDF
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

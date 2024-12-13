@@ -19,7 +19,7 @@ export default function Home() {
         <AttributeSelector onAdd={handleAddAttribute} />
         <ProposalLayout attributes={attributes} />
       </div>
-      <ExportButton attributes={attributes} />
+      {/* <ExportButton attributes={attributes} /> */}
     </div>
   );
 }

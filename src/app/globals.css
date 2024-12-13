@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.mylayout {
+  background-image: url("/assets/layout.webp");
+  background-position: center center;
+  background-repeat: no-repeat;
+  object-fit: cover;
+}

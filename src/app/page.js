@@ -14,7 +14,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">Next.js Proposal Generator</h1>
+      <h1 className="text-2xl font-bold mb-4">MORE - PROPOSAL</h1>
       <div className="flex gap-4">
         <AttributeSelector onAdd={handleAddAttribute} />
         <ProposalLayout attributes={attributes} />

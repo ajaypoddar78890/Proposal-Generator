@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const ATTRIBUTE_OPTIONS = ["Title", "Description", "Image", "List", "Chart"];
+const ATTRIBUTE_OPTIONS = ["Product Lauch", "Podcast", "Corporate Shoot", "Product Shoot", "Ad shoot"];
 
 export default function AttributeSelector({ onAttributeAdd }) {
   const [availableAttributes, setAvailableAttributes] =

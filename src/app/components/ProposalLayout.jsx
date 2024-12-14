@@ -66,7 +66,7 @@ export default function ProposalLayout() {
             </div>
           ))}
         </div>
-
+        
         {/* Place the Export to PDF button at the end */}
         <div className="mt-6 flex justify-end">
           <button

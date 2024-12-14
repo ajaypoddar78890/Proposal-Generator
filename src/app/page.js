@@ -1,9 +1,9 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import AttributeSelector from "./components/AttributeSelector";
 import ProposalLayout from "./components/ProposalLayout";
-import ExportButton from "./components/ExportButton";
+// import ExportButton from "./components/ExportButton";
 
 export default function Home() {
   const [attributes, setAttributes] = useState([]);
